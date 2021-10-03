@@ -1,3 +1,33 @@
+<script lang="ts">
+import { ref, computed, watch, defineComponent } from 'vue'
+import { postalApi } from './postalApi'
+
+export default defineComponent({
+  setup() {
+    const postalCode = ref('')
+    const addresses = ref<string[]>([])
+    let isWaiting = false
+
+    watch(postalCode, async () => {
+      isWaiting = true
+      addresses.value = await postalApi(postalCode.value)
+      isWaiting = false
+    })
+
+    const resultMessage = computed(() => {
+      const resultCount = addresses.value.length
+
+      if (postalCode.value == '') return '郵便番号(7桁)を入力してください'
+      if (isWaiting) return '...取得中'
+      if (resultCount === 0) return '見つかりませんでした'
+      return `${resultCount}件見つかりました`
+    })
+
+    return { postalCode, addresses, resultMessage }
+  },
+})
+</script>
+
 <template>
   <h1>ロジックをコンポジション関数に分割する：郵便番号検索</h1>
   <div class="description">
@@ -19,13 +49,6 @@
     </ol>
   </div>
 </template>
-
-<script lang="ts">
-import { computed, defineComponent } from 'vue'
-export default defineComponent({
-  setup() {},
-})
-</script>
 
 <style lang="scss" scoped>
 .PostalSearch {
