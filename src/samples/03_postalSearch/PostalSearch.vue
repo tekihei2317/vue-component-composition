@@ -1,22 +1,16 @@
-<script lang="ts">
-import { computed, defineComponent } from 'vue'
+<script lang="ts" setup>
+import { computed } from 'vue'
 import { usePostalSearch } from './usePostalSearch'
 
-export default defineComponent({
-  setup() {
-    const { postalCode, addresses, isWaiting } = usePostalSearch()
+const { postalCode, addresses, isWaiting } = usePostalSearch()
 
-    const resultMessage = computed(() => {
-      const resultCount = addresses.value.length
+const resultMessage = computed(() => {
+  const resultCount = addresses.value.length
 
-      if (postalCode.value == '') return '郵便番号(7桁)を入力してください'
-      if (isWaiting.value) return '...取得中'
-      if (resultCount === 0) return '見つかりませんでした'
-      return `${resultCount}件見つかりました`
-    })
-
-    return { postalCode, addresses, resultMessage }
-  },
+  if (postalCode.value == '') return '郵便番号(7桁)を入力してください'
+  if (isWaiting.value) return '...取得中'
+  if (resultCount === 0) return '見つかりませんでした'
+  return `${resultCount}件見つかりました`
 })
 </script>
 
