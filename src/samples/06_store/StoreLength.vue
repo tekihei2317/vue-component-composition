@@ -4,8 +4,18 @@
 
 <script lang="ts">
 import { defineComponent, PropType, toRef } from 'vue'
+import { useStoreLength } from './useStoreLength'
 
 export default defineComponent({
-  setup() {},
+  props: {
+    unit: {
+      type: String as PropType<'inch' | 'px' | 'mm'>,
+      default: 'inch',
+    },
+  },
+  setup(props) {
+    const length = useStoreLength(toRef(props, 'unit'))
+    return { length }
+  },
 })
 </script>
