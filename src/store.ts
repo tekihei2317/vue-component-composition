@@ -11,7 +11,7 @@ export type State = {
 export const store = createStore<State>({
   state: {
     length: 300,
-    angle: 60,
+    angle: 3.14,
   },
   mutations: {
     /** Lengthを変更 */
